@@ -7,5 +7,8 @@ var server = app.listen(3000);
 console.log('running');
 
 function showMessage() {
-    document.getElementById("message").innerText = "Hello from GitHub Pages! 🚀";
+    document.getElementById("message1").innerText = "Hello from GitHub Pages! 🚀";
+    document.getElementById("message2").innerText = "Hello from GitHub Pages! 🚀";
 }
+
+
