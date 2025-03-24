@@ -20,7 +20,7 @@ let iterations = 100.0;
 let colorParameter1 = 1;
 let sensitivity = 1.5;
 let parameter = 1;
-let shaderType = "julia";  // Change to "mandelbrot" or other types
+let shaderType = "mandelbrot";  // Change to "mandelbrot" or other types
 let timeIncrement = 0.05;
 let stateFile = "state.txt";
 
