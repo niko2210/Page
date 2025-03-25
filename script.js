@@ -1,17 +1,6 @@
 
-var express = require('express');
 
-var app = express();
-var server = app.listen(3000);
-
-console.log('running');
-
-function showMessage() {
-    document.getElementById("message1").innerText = "Hello from GitHub Pages! 🚀";
-    document.getElementById("message2").innerText = "your mom";
-}
-
-let shaderProgram;
+let myShader;
 let time = 0;
 let centerX = -0.75;
 let centerY = 0.0;
@@ -25,53 +14,26 @@ let timeIncrement = 0.05;
 let stateFile = "state.txt";
 
 function preload() {
-  shaderProgram = loadShader(`shader_${shaderType}.vert`, `shader_${shaderType}.frag`);
+    myShader = loadShader( "shader_mandelbrot.frag");
 }
 
 function setup() {
-  createCanvas(1480, 960, WEBGL);
-  shaderProgram.setUniform("u_resolution", [width, height]);
-}
-
-function keyPressed() {
-  if (key === ' ') {
-    recordState();
-  }
-  if (key === 'l') {
-    setStateFromFile();
-  }
-}
-
-function recordState() {
-  let data = `${centerX};${centerY};${zoom};${iterations}\n`;
-  saveStrings([data], stateFile);
-  print("recorded");
-}
-
-function setStateFromFile() {
-  loadStrings(stateFile, (lines) => {
-    if (lines.length > 0) {
-      let dataString = lines[lines.length - 1].split(";");
-      centerX = parseFloat(dataString[0]);
-      centerY = parseFloat(dataString[1]);
-      zoom = parseFloat(dataString[2]);
-      iterations = parseFloat(dataString[3]);
-      print("state updated");
-    }
-  });
+  createCanvas(windowWidth, windowHeight, WEBGL);
+  myShader.setUniform("u_resolution", [width, height]);
 }
 
 function draw() {
-  shaderProgram.setUniform("time", time);
-  shaderProgram.setUniform("iterations", iterations * Math.log(zoom * 10));
-  shaderProgram.setUniform("u_center", [centerX, centerY]);
-  shaderProgram.setUniform("u_zoom", zoom);
-  shaderProgram.setUniform("colorParameter1", colorParameter1);
-  shaderProgram.setUniform("sensitivity", sensitivity);
-  shaderProgram.setUniform("meditationFactorAverage", 1.1);
+    myShader.setUniform("time", time);
+    myShader.setUniform("iterations", iterations * Math.log(zoom * 10));
+    myShader.setUniform("u_center", [centerX, centerY]);
+    myShader.setUniform("u_zoom", zoom);
+    myShader.setUniform("colorParameter1", colorParameter1);
+    myShader.setUniform("sensitivity", sensitivity);
+    myShader.setUniform("meditationFactorAverage", 1.1);
   
-  shader(shaderProgram);
-  rect(-width / 2, -height / 2, width, height);
+  shader(myShader);
+  //rect(-width / 2, -height / 2, width, height);
+  plane(width, height);
   
   time += timeIncrement;
   handleKeyPress();
